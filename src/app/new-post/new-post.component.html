@@ -1,0 +1,230 @@
+<div class="mb-4"></div>
+<div *ngIf="statusMessage" class="alert alert-success center text-center" role="alert" style="width: 75%; margin: 0 auto;">
+    {{ statusMessage }}
+  </div>
+<div class="custom-container">
+    
+    <div class="custom-row">
+        <form class="custom-form" id="postForm">
+            <div class="mb-4"></div>
+            <h2 class="modal-title">Add Post</h2>
+
+
+            <div class="custom-form-group shadow-sm">
+                <input type="text" class="form-control form-control-alternative" placeholder="Title" [(ngModel)]="titre" [ngModelOptions]="{standalone: true}">
+            </div>
+
+        
+
+            <div class="custom-form-group shadow-sm">
+                <input type="text" class="form-control form-control-alternative" placeholder="Salary" [(ngModel)]="salary" [ngModelOptions]="{standalone: true}">
+            </div>
+
+            <div class="custom-form-group shadow-sm">
+                <div class="input-group input-group-alternative mb-4 shadow-sm">
+                    <input class="form-control" placeholder="Contract Type" type="text" [(ngModel)]="contractType" [ngModelOptions]="{standalone: true}">
+                </div>
+            </div>
+
+            <div class="custom-form-group shadow-sm">
+                <input type="text" class="form-control form-control-alternative" placeholder="Team" [(ngModel)]="team" [ngModelOptions]="{standalone: true}">
+            </div>
+
+    
+            <textarea class="form-control form-control-alternative  mb-4 shadow-sm" rows="3" placeholder="Description" [(ngModel)]="description" [ngModelOptions]="{standalone: true}"></textarea>
+
+            <div id="button-container" class="d-flex justify-content-end shadow-sm">
+             
+              
+                <button type="button" class="btn btn-turquoise custom-btn" data-toggle="modal" data-target="#exampleModal2">
+                    <i class="bi bi-person-add"></i> <!-- Icon for Assign Collab -->
+                      Assign Collab
+                </button>
+                <button type="button" class="btn btn-mauve custom-btn" data-toggle="modal" data-target="#exampleModal1">
+                    <i class="bi bi-bar-chart-line"></i> <!-- Icon for Manage Skills -->
+                    Manage Skills
+                </button>
+            
+                <button type="button" class="btn custom-btn btn-orange" (click)="refreshBoxes()">
+                    <i class="bi bi-arrow-clockwise"></i> <!-- Icon for Refresh -->
+                    Refresh
+                </button>
+                <button type="button" (click)="backToPostes()" class="btn custom-btn btn-red">
+                    <i class="bi bi-x-circle"></i> <!-- Icon for Cancel -->
+                    Cancel
+                </button>
+                <button type="button" (click)="savePost()"  class="btn btn-vert custom-btn">
+                    <i class="bi bi-check2-circle"></i> 
+                    Save
+                </button>
+
+                
+
+            </div>
+            
+            
+    
+
+
+        </form>
+        
+    </div>
+</div>
+
+
+
+<div class="modal fade custom-modal" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Skills to the Post</h5>
+        </div>
+        <div class="modal-body">
+          
+
+          <div class="card">
+        
+            <div class="card-body">
+              <h2 class="card-title">Skills List</h2>
+              <form [formGroup]="searchFormGroup" (ngSubmit)="handleSearchSkills()">
+                <div class="input-group mb-3">
+                  <label class="input-group-text">Search Skill:</label>
+                  <input type="text" class="form-control" formControlName="keyword">
+                  <button class="btn btn-info" style="background-color: #808080; border-color: #808080;"> 
+                    <i class="bi bi-search"></i>
+                  </button>
+
+
+                </div>
+
+                
+
+                 
+             
+              </form>
+              <div class="mt-3">
+              <table class="table table-bordered table-hover">
+                <thead>
+                <tr class="table-secondary">
+                  <th>Skill's Name</th>
+                  <th>Description</th>
+                  <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let c of competences">
+                  <td>{{ c.nom }}</td>
+                  <td>{{ c.description }}</td>
+                  
+                    <td style="width: 130px;"> <!-- Adjusted width to match the width of other columns -->
+                      <button type="button" class="btn btn-turquoise custom-btn" style="width: 100%;" (click)="addSkill(c)">
+                        <i class="bi bi-plus-circle"></i> Add Skill
+                      </button>
+                    </td>
+                 
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <h2 class="card-title">Chosen Skill :</h2>
+
+            <div class="form-group">
+
+              <input type="text" placeholder="Skill" class="form-control" id="recipient-name" [(ngModel)]="chosenSkillName" [disabled]="chosenSkillDisabled">
+            </div>
+            <div class="mb-4"></div>
+            <div class="form-group">
+              <input type="text" placeholder="Description" class="form-control" id="recipient-name" [(ngModel)]="chosenSkillDescription" [disabled]="chosenSkillDisabled">
+            </div>
+            <div class="mb-4"></div>
+            <div class="form-group">
+              <input type="text" placeholder="Level" class="form-control" id="recipient-name" [disabled]="chosenSkillDisabled">
+            </div>
+            
+
+
+        
+            </div>
+          </div>
+  
+        </div>
+        <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn custom-btn btn-red">
+                <i class="bi bi-x-circle"></i> <!-- Icon for Cancel -->
+                Cancel
+            </button>
+            <button type="button" (click)="onSave()"  class="btn btn-vert custom-btn">
+                <i class="bi bi-check2-circle"></i> 
+                Save
+            </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="modal fade custom-modal" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <h5 class="modal-title allign-title" id="exampleModalLabel">Assign Collab to the post</h5>
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Collabs List</h2>
+                    <form [formGroup]="searchFormGroup" (ngSubmit)="handleSearchCollabs()">
+                        <div class="input-group mb-3">
+                            <label class="input-group-text">Search :</label>
+                            <input type="text" class="form-control" formControlName="keyword">
+                            <button class="btn btn-info" style="background-color: #808080; border-color: #808080;">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <div class="mt-3">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr class="table-secondary">
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let c of collabs">
+                                    <td>{{ c.nom }}</td>
+                                    <td>{{ c.email }}</td>
+                                    <td style="width: 160px;">
+                                      <button type="button" 
+                                            class="btn custom-btn" 
+                                            [ngClass]="{
+                                                'btn-turquoise': !collabAssignedMap[c.id],
+                                                'btn-jaune': collabAssignedMap[c.id]
+                                            }"
+                                            style="width: 100%;"
+                                            (click)="onSaveCollab(c.id)">
+                                        <i class="bi bi-person-add"></i> 
+                                        {{ collabAssignedMap[c.id] ? 'Collab Assigned' : 'Assign Collab' }}
+                                    </button>
+                                  </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="mb-4"></div>
+                <div class="mb-4"></div>
+                <button type="button" data-dismiss="modal" class="btn custom-btn btn-red">
+                    <i class="bi bi-x-circle"></i> <!-- Icon for Cancel -->
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-vert custom-btn" (click)="saveCollab()">
+                    <i class="bi bi-check2-circle"></i> 
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
